@@ -1,0 +1,40 @@
+                      | # Xiaozhi Zhu
+  0x000:              |     .pos 0
+  0x000:              | init:   
+  0x000: 30f400010000 |     irmovl stack, %esp # set stack pointer
+  0x006: 8024000000   |     call main
+  0x00b: 00           |     halt
+                      | 
+                      | # Sample linked list
+  0x00c:              |     .align 4
+  0x00c:              | ele1:
+  0x00c: 0a000000     |     .long 0x00a
+  0x010: 14000000     |     .long ele2
+  0x014:              | ele2:
+  0x014: b0000000     |     .long 0x0b0
+  0x018: 1c000000     |     .long ele3
+  0x01c:              | ele3:
+  0x01c: 000c0000     |     .long 0xc00
+  0x020: 00000000     |     .long 0
+                      | 
+  0x024:              | main:
+  0x024: 30f60c000000 |     irmovl ele1, %esi # set head
+  0x02a: 8030000000   |     call rsum
+  0x02f: 90           |     ret
+                      | 
+  0x030:              | rsum:
+  0x030: 6300         |     xorl %eax, %eax # int val = 0
+  0x032: 6311         |     xorl %ecx, %ecx # int rest = 0
+  0x034: 6266         |     andl %esi, %esi # check if ls==null
+  0x036: 7350000000   |     je recursive_end
+  0x03b: 500600000000 |     mrmovl (%esi), %eax # int val = ls->val
+  0x041: a00f         |     pushl %eax # push val
+  0x043: 506604000000 |     mrmovl 4(%esi), %esi # ls = ls->next
+  0x049: 8030000000   |     call rsum
+  0x04e: b01f         |     popl %ecx # pop val
+  0x050:              | recursive_end:
+  0x050: 6010         |     addl %ecx, %eax # return val + rest
+  0x052: 90           |     ret
+                      | 
+  0x100:              |     .pos 0x100
+  0x100:              | stack:

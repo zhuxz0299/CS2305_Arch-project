@@ -1,0 +1,43 @@
+  0x000:              |     .pos 0
+  0x000:              | init:
+  0x000: 30f400040000 |     irmovl stack, %esp
+  0x006: 8024000000   | 	call main
+  0x00b: 00           | 	halt
+                      | 
+  0x00c:              |     .align 4
+  0x00c:              | src:
+  0x00c: 0a000000     |     .long 0x00a
+  0x010: b0000000     |     .long 0x0b0
+  0x014: 000c0000     |     .long 0xc00
+  0x018:              | dest:
+  0x018: 11010000     |     .long 0x111
+  0x01c: 22020000     |     .long 0x222
+  0x020: 33030000     |     .long 0x333
+                      | 
+                      | 
+  0x024:              | main:
+  0x024: 30f70c000000 | 	irmovl src , %edi # src
+  0x02a: 30f618000000 |     irmovl dest , %esi # dest
+  0x030: 30f203000000 |     irmovl $3 , %edx # len
+  0x036: 803c000000   | 	call copy
+  0x03b: 90           | 	ret
+                      | 
+  0x03c:              | copy:
+  0x03c: 6300         |     xorl    %eax , %eax # store the result
+  0x03e:              | loop:
+  0x03e: 6222         |     andl    %edx , %edx # if %edx == 0, jump to end
+  0x040: 716a000000   |     jle     end
+  0x045: 501700000000 |     mrmovl  (%edi) , %ecx # value = *src
+  0x04b: 30f304000000 |     irmovl  $4 , %ebx 
+  0x051: 6037         |     addl    %ebx , %edi # src++
+  0x053: 401600000000 |     rmmovl  %ecx , (%esi) # *dest = value
+  0x059: 6036         |     addl    %ebx , %esi # dest++
+  0x05b: 6310         |     xorl    %ecx , %eax # result ^= value
+  0x05d: 30f301000000 |     irmovl  $1 , %ebx 
+  0x063: 6132         |     subl    %ebx , %edx # len--
+  0x065: 703e000000   |     jmp     loop 
+  0x06a:              | end:
+  0x06a: 90           |     ret
+                      | 
+  0x400:              |     .pos 0x400
+  0x400:              | stack:

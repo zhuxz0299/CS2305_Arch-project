@@ -1,0 +1,40 @@
+# Xiaozhi Zhu
+    .pos 0
+init:   
+    irmovl stack, %esp # set stack pointer
+    call main
+    halt
+
+# Sample linked list
+    .align 4
+ele1:
+    .long 0x00a
+    .long ele2
+ele2:
+    .long 0x0b0
+    .long ele3
+ele3:
+    .long 0xc00
+    .long 0
+
+main:
+    irmovl ele1, %esi # set head
+    call rsum
+    ret
+
+rsum:
+    xorl %eax, %eax # int val = 0
+    xorl %ecx, %ecx # int rest = 0
+    andl %esi, %esi # check if ls==null
+    je recursive_end
+    mrmovl (%esi), %eax # int val = ls->val
+    pushl %eax # push val
+    mrmovl 4(%esi), %esi # ls = ls->next
+    call rsum
+    popl %ecx # pop val
+recursive_end:
+    addl %ecx, %eax # return val + rest
+    ret
+
+    .pos 0x100
+stack:
