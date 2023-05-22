@@ -19,8 +19,8 @@ test-trans: test-trans.c trans.o cachelab.c cachelab.h
 tracegen: tracegen.c trans.o cachelab.c
 	$(CC) $(CFLAGS) -O0 -o tracegen tracegen.c trans.o cachelab.c
 
-transpose: $(OBJS)
-	$(CC) $(CFLAGS) -o transpose $(OBJS)
+# transpose: $(OBJS)
+# 	$(CC) $(CFLAGS) -o transpose $(OBJS)
 
 cachelab.o: cachelab.c cachelab.h
 	$(CC) $(CFLAGS) -c cachelab.c
