@@ -107,6 +107,7 @@ void transpose_with_trick(int i, int j, int M, int N, int A[N][M], int B[M][N])
     }
 }
 
+//////////////////////////////////////// helper function for debug ////////////////////////////////////////
 void traverse(int M, int N, int B[M][N])
 {
     for (int i = 0; i < M; i++)
@@ -235,7 +236,7 @@ void registerFunctions()
     registerTransFunction(transpose_submit, transpose_submit_desc);
 
     /* Register any additional transpose functions */
-    registerTransFunction(trans, trans_desc);
+    // registerTransFunction(trans, trans_desc);
 }
 
 /*
